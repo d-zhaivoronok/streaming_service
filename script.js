@@ -70,3 +70,27 @@ $('#audio-player').on('timeupdate', function() {
   });
   $('#current_time').text(formatTime(audioPlayer.currentTime));
 });
+
+
+$('#show_list').on('click', function() {
+  $('#show_list_img').toggleClass("show_list_img_active");
+  document.body.style.overflow = $('#show_list_img').hasClass('show_list_img_active') ? "hidden" : "scroll"; 
+  $('#played_song').toggleClass("played_song_active");
+});
+
+$('#next_songs_list').on('click', function() {
+  if($('#next_songs').hasClass("hide_next")){
+    $('#next_songs').toggleClass("hide_next");
+    $('#text_song').toggleClass("show_text");
+  }
+});
+
+$('#text_song_list').on('click', function() {
+  if(!$('#text_song').hasClass("show_text")){
+    $('#next_songs').toggleClass("hide_next");
+    $('#text_song').toggleClass("show_text");
+  }
+});
+
+
+
