@@ -17,9 +17,28 @@
                 <a href="./index.html" class="header_button">Головна</a>
                 <a href="./library.html" class="header_button header_button_active">Бібліотека</a>
                 <a href="#" class="header_button">Пошук</a>
-                <a href="#" class="header_button">Мій профіль</a>
+                <a href="profile.html" class="header_button">Мій профіль</a>
             </ul>
         </header>
+
+        <div class="new_playlist" id="new_playlist">
+        </div>
+
+        <div class="new_playlist_add" id="new_playlist_add">
+            <div class="new_playlist_add_content">
+                <input type="text" class="playlist_name" placeholder="Назва плейлісту">
+                <select name="type" id="type_of_playlist">
+                    <div class="options">
+                        <option value="publick">Публічний</option>
+                        <option value="private">Приватний</option>
+                    </div>
+                </select>
+                <div class="new_playlist_add_buttons">
+                    <button class="new_playlist_add_button" id="playlist_create_cancel">Відімінити</button>
+                    <button class="new_playlist_add_button"type="submit">Створити</button>
+                </div>
+            </div>
+        </div>
 
         <div class="filters content_block">
             <a href="#" class="filter">Виконаці</a>
@@ -110,6 +129,8 @@
             </a>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="library.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
