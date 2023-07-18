@@ -1,0 +1,21 @@
+{% extends 'bootisfi/base.html' %}
+{% block title %}
+Login
+{% endblock %}
+{% block content %}
+<form method="POST" action="" class="registration-form">
+    <h1>Login</h1>
+    {% csrf_token %}
+    <def class="form-field">
+        <h1>Username</h1>
+        <input type="text" name="username" placeholder="Username..." class="login-form-field">
+    </def>
+    <def class="form-field">
+    <h1>Password</h1>
+    <input type="password" name="password" placeholder="Password..." class="login-form-field">
+    </def>
+
+	<h1 style="margin-top: 2vh">Don't have an account? <a href="{% url 'signup' %}" style="color: #fff; text-decoration: underline">Sign Up</a></h1>
+    <input class="login_btn" type="submit" value="Login">
+</form>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'bootisfi/base.html' %}
+{% load static %}
+{% block title %}
+Бібліотека
+{% endblock %}
+{% block header %}
+    <header class="header" id="header">
+        <ul class="header_buttons">
+            <a href="{% url 'home' %}" class="header_button">Головна</a>
+            <a href="{% url 'library' %}" class="header_button header_button_active">Бібліотека</a>
+            <a href="#" class="header_button">Пошук</a>
+            {% if not request.user.is_authenticated %}
+            <a href="{% url 'login' %}" class="header_button">Увійти</a>
+            {% else %}
+                <a href="{% url 'profile' %}" class="header_button">Привіт, {{ request.user.participiant.name }}</a>
+                <a href="{% url 'logout' %}" class="header_button logout_button">Вийти</a>
+            {% endif %}
+        </ul>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="new_playlist" id="new_playlist">
+    </div>
+
+    <div class="new_playlist_add" id="new_playlist_add">
+        <form method="POST" class="new_playlist_add_content">
+            {% csrf_token %}
+            <input type="text" name="name" maxlength="100" required="" id="id_name" class="playlist_name" placeholder="Назва плейлісту">
+
+            <select name="is_public" id="id_is_public" class="type_of_playlist">
+              <option value="public" selected="">Публічний</option>
+              <option value="private">Приватний</option>
+            </select>
+            <div class="new_playlist_add_buttons">
+                <button class="new_playlist_add_button" id="playlist_create_cancel">Відімінити</button>
+                <button class="new_playlist_add_button" type="submit">Створити</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="filters content_block">
+    {% if request.user.participiant.user_type == 'band' %}
+        <a href="{% url 'library_filters' 'albums' %}" class="filter">Альбоми</a>
+    {% endif %}
+        <a href="{% url 'library_filters' 'playlists' %}" class="filter">Плейлісти</a>
+    </div>
+    <div class="library_elements content_block">
+        {% for lib in library %}
+            <a href="#" class="library_element library_artist">
+                <img src="{{ lib.image.url }}" alt="" class="library_artist_avatar library_element_preview">
+                <h2 class="library_artist">{{ lib.name}}</h2>
+            </a>
+        {% endfor %}
+        {% if request.user.participiant.user_type == 'band' %}
+            {% for album in albums %}
+            <a href="#" class="library_element library_artist">
+                <img src="{{ album.image.url }}" alt="" class="library_artist_avatar library_element_preview">
+                <h2 class="library_artist">{{ album.name}}</h2>
+            </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+

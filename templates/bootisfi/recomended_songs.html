@@ -1,0 +1,25 @@
+{% load static %}
+
+{% block recomended_songs %}
+    {% if recently_listened_songs_count > 11 %}
+    <div class="quick_play content_block">
+            <h1 class="text_header">Рекомендуємо послухати</h1>
+            <div class="recomended_music">
+                {% for rec in recommendation %}
+                    <a href="{% url 'play' rec.id %}" class="song">
+                    <img src="{{ rec.album.image.url }}" alt="" class="song_preview">
+                    <div class="song_info">
+                        <h2 class="song_title">{{ rec.name }}</h2>
+                        <h3 class="song_artist">{{ rec.author.participiant.name }}</h3>
+                    </div>
+                    <button class="song_tech">
+                        <span class="button_dot"></span>
+                        <span class="button_dot"></span>
+                        <span class="button_dot"></span>
+                    </button>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
