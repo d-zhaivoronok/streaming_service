@@ -1,0 +1,95 @@
+{% extends 'bootisfi/base.html' %}
+{% load static %}
+{% block title %}
+Слухає
+{% endblock %}
+{% block header %}
+    <header class="header" id="header">
+        <ul class="header_buttons">
+            <a href="{% url 'home' %}" class="header_button header_button_active">Головна</a>
+            <a href="{% url 'library' %}" class="header_button">Бібліотека</a>
+            <a href="#" class="header_button">Пошук</a>
+            {% if not request.user.is_authenticated %}
+            <a href="{% url 'login' %}" class="header_button">Увійти</a>
+            {% else %}
+                <a href="{% url 'profile' %}" class="header_button">Привіт, {{ request.user.participiant.name }}</a>
+                <a href="{% url 'logout' %}" class="header_button logout_button">Вийти</a>
+            {% endif %}
+        </ul>
+    </header>
+{% endblock %}
+
+{% block content %}
+
+    {% include 'bootisfi/recently_listen.html' %}
+    {% include 'bootisfi/recomended_songs.html' %}
+    {% include 'bootisfi/charts_top.html' %}
+    {% include 'bootisfi/new_albums.html' %}
+
+    <div class="play_song">
+    <div class="slidecontainer">
+        <input type="range" min="0" max="1000" value="0" class="slider" id="song_progress">
+    </div>
+
+    <div class="play_song_content">
+        <audio id="audio-player" allow="autoplay">
+            <source src="{{ song.source.url }}" type="audio/mpeg">
+          </audio>
+        <div class="song_controls">
+            <button class="control_button" id="previous"><img src="{% static 'bootisfi/imgs/previous.png' %}" alt="" id="previous_img" class="control_button_b"></button>
+            <button class="control_button" id="play"><img src="{% static 'bootisfi/imgs/play.png' %}" alt="" id="play_img" class="control_button_b"></button>
+            <button class="control_button" id="next"><img src="{% static 'bootisfi/imgs/next.png' %}" alt="" id="next_img" class="control_button_b"></button>
+        </div>
+
+        <div class="song_play_info">
+            <img src="{{ song.album.image.url }}" alt="" class="song_author">
+            <a href="#" class="song_play">{{ song.name }}</a>
+            <span class="song_play_dot"></span>
+            <a href="#" class="song_play">{{ song.author }}</a>
+        </div>
+
+        <div class="song_play_time">
+            <span id="current_time" class="song_time">2:30</span>
+            /
+            <span id="from_all_time" class="song_time">1:58</span>
+        </div>
+        <div class="sond_info">
+            <button class="control_button" id="show_list"><img src="{% static 'bootisfi/imgs/show_hide_button.png' %}" id="show_list_img" class="show_list_image"></button>
+        </div>
+    </div>
+    </div>
+
+    <div class="played_song played_song_active" id="played_song">
+    <img src="{{ song.album.image.url }}" alt="" class="artist_preview">
+
+    <div class="songs_list">
+        <div class="songs_list_controls">
+            <h3 class="songs_list_text" id="next_songs_list">Далі</h3>
+            <h3 class="songs_list_text" id="text_song_list">Текст</h3>
+        </div>
+
+        <div class="next_songs" id="next_songs">
+            {% for next in play_next %}
+                <a href="{% url 'play' next.id %}" class="next_song">
+                <div class="next_song_content">
+                    <div class="next_song_g_content">
+                        <img src="{{ next.album.image.url }}" alt="" class="next_song_preview">
+                        <div class="next_song_info">
+                            <h2 class="next_song_title">{{ next.name }}</h2>
+                            <h3 class="next_song_artist">{{ next.author.participiant.name }}</h2>
+                        </div>
+                    </div>
+                    <div class="song_play_time">
+                        <span id="from_all_time" class="song_time">1:58</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <pre class="text_song" id="text_song">
+            {{ song.lyrics }}
+        </pre>
+    </div>
+    </div>
+{% endblock %}
+

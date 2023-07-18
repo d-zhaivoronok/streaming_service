@@ -1,0 +1,18 @@
+{% load static %}
+
+{% block recently_played %}
+    {% if recently_listened_songs.count > 4 %}
+        <div class="again_play content_block">
+            <h1 class="text_header">Послухати ще раз</h1>
+            <div class="recomended_music">
+                {% for song in recently_listened_songs %}
+                    <a href="{% url 'play' song.song.id %}" class="recomended_song">
+                        <img src="{{ song.song.album.image.url }}" alt="" class="recomended_song_preview">
+                        <h2 class="song_title">{{ song.song.name }}</h2>
+                        <h3 class="song_artist">{{ song.song.author.participiant.name }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

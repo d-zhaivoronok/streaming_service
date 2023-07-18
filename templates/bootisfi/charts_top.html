@@ -1,0 +1,21 @@
+{% load static %}
+
+{% block top_charts %}
+    <div class="top_charts content_block">
+        <h1 class="text_header">Топ чартів</h1>
+        <div class="recomended_music">
+            {% for top_chart in top_charts %}
+            <a href="{% url 'play' top_chart.id %}" class="song">
+                <img src="{{ top_chart.album.image.url }}" alt="" class="song_preview">
+                <div class="song_info">
+                    <h2 class="song_title">{{ top_chart.name }}</h2>
+                    <h3 class="song_artist">{{ top_chart.author }}</h3>
+                </div>
+                <div class="song_top">
+                    <h3 class="song_level">{{ forloop.counter }}</h3>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

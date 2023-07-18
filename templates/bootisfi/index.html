@@ -1,0 +1,27 @@
+{% extends 'bootisfi/base.html' %}
+{% load static %}
+{% block title %}
+BootisFI
+{% endblock %}
+{% block header %}
+    <header class="header" id="header">
+        <ul class="header_buttons">
+            <a href="{% url 'home' %}" class="header_button header_button_active">Головна</a>
+            <a href="{% url 'library' %}" class="header_button">Бібліотека</a>
+            <a href="#" class="header_button">Пошук</a>
+            {% if not request.user.is_authenticated %}
+            <a href="{% url 'login' %}" class="header_button">Увійти</a>
+            {% else %}
+                <a href="{% url 'profile' %}" class="header_button">Привіт, {{ request.user.participiant.name }}</a>
+                <a href="{% url 'logout' %}" class="header_button logout_button">Вийти</a>
+            {% endif %}
+        </ul>
+    </header>
+{% endblock %}
+
+{% block content %}
+    {% include 'bootisfi/recently_listen.html' %}
+    {% include 'bootisfi/recomended_songs.html' %}
+    {% include 'bootisfi/charts_top.html' %}
+    {% include 'bootisfi/new_albums.html' %}
+{% endblock %}
