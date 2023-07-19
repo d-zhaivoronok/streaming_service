@@ -20,6 +20,31 @@
 {% endblock %}
 
 {% block content %}
+
+    {% if request.user.participiant.user_type == 'band' %}
+        <div class="new_album" id="new_album">
+        Новий альбом
+        </div>
+    {% endif %}
+
+    <div class="new_album_add" id="new_album_add" style="overflow: scroll">
+        <form method="POST" class="new_album_add_content" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="profile_user_info">
+                <img id="previewImage" class="user_avatar" src="{% static 'bootisfi/imgs/background.jpg' %}" alt=""  style="margin-bottom: 5vh"/>
+                <input type="file" name="image" accept="image/*" id="imageInput">
+            </div>
+            <input type="text" name="name" maxlength="100" required="" id="id_name" class="playlist_name" placeholder="Назва альбому">
+            <textarea name="description" id="id_description" class="playlist_name" placeholder="Опис альбому" style="resize:vertical; height: 20vh; padding: 2vh 5vh" ></textarea>
+            <div class="new_album_add_buttons">
+                <button class="new_album_add_button" id="album_create_cancel">Відімінити</button>
+                <button class="new_album_add_button" type="submit" name="create_album">Створити</button>
+            </div>
+
+        </form>
+    </div>
+
     <div class="new_playlist" id="new_playlist">
     </div>
 
@@ -34,7 +59,7 @@
             </select>
             <div class="new_playlist_add_buttons">
                 <button class="new_playlist_add_button" id="playlist_create_cancel">Відімінити</button>
-                <button class="new_playlist_add_button" type="submit">Створити</button>
+                <button class="new_playlist_add_button" type="submit" name="create_playlist">Створити</button>
             </div>
 
         </form>
@@ -55,7 +80,7 @@
         {% endfor %}
         {% if request.user.participiant.user_type == 'band' %}
             {% for album in albums %}
-            <a href="#" class="library_element library_artist">
+            <a href="{% url 'album' album.id %}" class="library_element library_artist">
                 <img src="{{ album.image.url }}" alt="" class="library_artist_avatar library_element_preview">
                 <h2 class="library_artist">{{ album.name}}</h2>
             </a>

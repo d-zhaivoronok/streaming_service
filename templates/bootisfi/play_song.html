@@ -45,13 +45,13 @@
             <img src="{{ song.album.image.url }}" alt="" class="song_author">
             <a href="#" class="song_play">{{ song.name }}</a>
             <span class="song_play_dot"></span>
-            <a href="#" class="song_play">{{ song.author }}</a>
+            <a href="#" class="song_play">{{ song.author.participiant.name }}</a>
         </div>
 
         <div class="song_play_time">
-            <span id="current_time" class="song_time">2:30</span>
+            <span id="current_time" class="song_time"></span>
             /
-            <span id="from_all_time" class="song_time">1:58</span>
+            <span id="from_all_time" class="song_time"></span>
         </div>
         <div class="sond_info">
             <button class="control_button" id="show_list"><img src="{% static 'bootisfi/imgs/show_hide_button.png' %}" id="show_list_img" class="show_list_image"></button>
@@ -70,13 +70,13 @@
 
         <div class="next_songs" id="next_songs">
             {% for next in play_next %}
-                <a href="{% url 'play' next.id %}" class="next_song">
+            <a href="{% url 'play' next.id %}" class="next_song">
                 <div class="next_song_content">
                     <div class="next_song_g_content">
                         <img src="{{ next.album.image.url }}" alt="" class="next_song_preview">
                         <div class="next_song_info">
                             <h2 class="next_song_title">{{ next.name }}</h2>
-                            <h3 class="next_song_artist">{{ next.author.participiant.name }}</h2>
+                            <h3 class="next_song_artist">{{ next.author.participiant.name }}</h3>
                         </div>
                     </div>
                     <div class="song_play_time">

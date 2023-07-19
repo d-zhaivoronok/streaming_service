@@ -13,6 +13,8 @@ urlpatterns = [
     path('signup/', views.signupUser, name="signup"),
     path('logout/', views.logoutUser, name="logout"),
     path('play/<uuid:song_id>', views.listen, name="play"),
+    path('album/<uuid:album_id>', views.playlist, name="album"),
+    path('album/remove/<uuid:album_id>', views.playlistRemove, name="album_remove"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,6 +8,10 @@ class CreatePlaylist(ModelForm):
         model = Playlist
         fields = ['name', 'is_public']
 
+class CreateAlbum(ModelForm):
+    class Meta:
+        model = Album
+        fields = ['image', 'name', 'description']
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -18,3 +22,8 @@ class ChangeUserForm(ModelForm):
     class Meta:
         model = Participiant
         fields = ["avatar", "name", "user_type"]
+
+class NewSong(ModelForm):
+    class Meta:
+        model = Song
+        fields = ["name", "lyrics", "source", "album", "genres"]

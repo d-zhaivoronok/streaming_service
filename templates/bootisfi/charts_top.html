@@ -6,11 +6,13 @@
         <div class="recomended_music">
             {% for top_chart in top_charts %}
             <a href="{% url 'play' top_chart.id %}" class="song">
+            <div class="song_content">
                 <img src="{{ top_chart.album.image.url }}" alt="" class="song_preview">
                 <div class="song_info">
                     <h2 class="song_title">{{ top_chart.name }}</h2>
-                    <h3 class="song_artist">{{ top_chart.author }}</h3>
+                    <h3 class="song_artist">{{ top_chart.author.participiant.name }}</h3>
                 </div>
+            </div>
                 <div class="song_top">
                     <h3 class="song_level">{{ forloop.counter }}</h3>
                 </div>
