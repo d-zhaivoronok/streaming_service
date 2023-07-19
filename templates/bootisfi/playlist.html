@@ -1,0 +1,79 @@
+{% extends 'bootisfi/base.html' %}
+{% load static %}
+{% block title %}
+Плейліст
+{% endblock %}
+{% block header %}
+    <header class="header" id="header">
+        <ul class="header_buttons">
+            <a href="{% url 'home' %}" class="header_button">Головна</a>
+            <a href="{% url 'library' %}" class="header_button header_button_active">Бібліотека</a>
+            <a href="#" class="header_button">Пошук</a>
+            {% if not request.user.is_authenticated %}
+            <a href="{% url 'login' %}" class="header_button">Увійти</a>
+            {% else %}
+                <a href="{% url 'profile' %}" class="header_button">Привіт, {{ request.user.participiant.name }}</a>
+                <a href="{% url 'logout' %}" class="header_button logout_button">Вийти</a>
+            {% endif %}
+        </ul>
+    </header>
+{% endblock %}
+
+{% block content %}
+
+    <div class="new_song_add" id="new_song_add" style="overflow:scroll;">
+        <form method="POST" class="new_song_add_content" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="text" name="name" maxlength="100" required="" id="id_name" class="playlist_name" placeholder="Назва пісні">
+            <textarea name="lyrics" id="id_lyrics" class="playlist_name" placeholder="Текст пісні" style="resize:vertical; height: 40vh; padding: 2vh 5vh" ></textarea>
+            <label for="id_source" class="add_song_placeholder">Обрати пісню</label>
+            <input type="file" name="source" id="id_source" style="display: none">
+
+            <select name="genres" id="id_genres" class="type_of_playlist" style="margin-top: 2vh">
+                {% for genre in genres %}
+                    <option value="{{ forloop.counter }}">{{ genre.name }}</option>
+                {% endfor %}
+            </select>
+
+            <div class="new_song_add_buttons">
+                <button class="new_playlist_add_button" id="album_create_cancel">Відімінити</button>
+                <button class="new_playlist_add_button" type="submit" name="album_playlist">Створити</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="album_info" id="album_info">
+        <img src="{{ album.image.url }}" alt="" class="album_image">
+        <h2 class="album_name">{{ album.name }}</h2>
+        <a href="#" class="album_author">{{ album.user_or_band.participiant.name }}</a>
+        <p class="album_desc">{{ album.description }}</p>
+        {% if request.user == album.user_or_band %}
+            <div class="album_controls">
+                <a href="{% url 'album_remove' album.id %}" class="album_controls_button remove_album" id="upload_song_cancel">Видалити</a>
+                <a href="#" class="album_controls_button upload_song" id="upload_song">Завантажити пісню</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="album_songs">
+    {% for song in songs %}
+        <a href="{% url 'play' song.id %}" class="next_song">
+            <div class="next_song_content">
+                <div class="next_song_g_content">
+                    <img src="{{ song.album.image.url }}" alt="" class="next_song_preview">
+                    <div class="next_song_info">
+                        <h2 class="next_song_title">{{ song.name }}</h2>
+                        <h3 class="next_song_artist">{{ song.author.participiant.name }}</h3>
+                    </div>
+                </div>
+                <div class="song_play_time">
+                    <span id="from_all_time" class="song_time">1:58</span>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+

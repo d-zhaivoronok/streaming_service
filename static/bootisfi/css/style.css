@@ -231,6 +231,15 @@ border-radius: 100%;
     flex-direction: column;
     padding: 2vh 0 2vh 0;
     justify-content: space-between;
+    margin-left: 4vh;
+}
+
+.song_rec{
+    justify-content: left;
+}
+
+.song_content{
+    display: flex;
 }
 
 .song_title, .library_artist{
@@ -334,7 +343,7 @@ border-radius: 100%;
     background-color: #00000090;
 }
 
-.new_playlist{
+.new_playlist, .new_album{
     background-color: #009099;
     position: fixed;
     z-index: 2;
@@ -352,11 +361,23 @@ border-radius: 100%;
     cursor: pointer;
 }
 
-.new_playlist:hover{
+.new_album{
+    width: 15vh;
+    border-radius: 3vh;
+    text-align: center;
+    padding: 0 5vh;
+    display: flex;
+    align-items: center;
+    background-image: none;
+    background-color: #067981;
+    left: 6%;
+}
+
+.new_playlist:hover, .new_album:hover{
     background-color: #00747c;
 }
 
-.new_playlist_add{
+.new_playlist_add, .new_album_add{
     background-color: #000000d5;
     top: 7vh;
     width: 100%;
@@ -370,7 +391,22 @@ border-radius: 100%;
     visibility: hidden;
 }
 
-.new_playlist_add_content{
+.new_song_add{
+    background-color: rgba(0, 0, 0, 0.91);
+    top: 7.2vh;
+    right: 0;
+    width: 74vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 2;
+    display: flex;
+    align-content: center;
+    animation: hide_new_song_info 1s;
+    transition: visibility 1s;
+    visibility: hidden;
+}
+
+.new_playlist_add_content, .new_album_add_content, .new_song_add_content{
     background-color: #ffffff05;
     padding: 5vh;
     border-radius: 5vh;
@@ -379,6 +415,14 @@ border-radius: 100%;
     width: 20%;
     height: max-content;
     margin: 30vh auto;
+}
+
+.new_song_add_content{
+    margin: 5vh auto;
+}
+
+.new_album_add_content{
+    margin: 10vh auto;
 }
 
   
@@ -408,13 +452,13 @@ border-radius: 100%;
 }
   
 
-.new_playlist_add_buttons{
+.new_playlist_add_buttons, .new_album_add_buttons, .new_song_add_buttons{
     display: flex;
     justify-content: space-between;
     margin-top: 2vh;
 }
 
-.new_playlist_add_button{
+.new_playlist_add_button, .new_album_add_button, .new_song_add_button{
     outline: none;
     border: none;
     background-color: #00000070;
@@ -427,9 +471,15 @@ border-radius: 100%;
     font-weight: 600;
 }
 
-.new_playlist_add_show{
+.new_playlist_add_show, .new_album_add_show{
     visibility: visible;
     animation: show_play_info .5s;
+}
+
+.new_song_add_show{
+    transition: visibility 0s;
+    visibility: visible;
+    animation: show_new_song_info 1s;
 }
 
 .playlist_name, .user_password, .user_name{
@@ -725,6 +775,130 @@ border-radius: 100%;
     margin-top: 60px;
     color: #fff;
     padding: 20px 0;
+}
+
+.album_info{
+    background-color: #000000A0;
+    width: 20vw;
+    height: 80vh;
+    margin: auto;
+    margin-top: -1vh;
+    padding: 10vh 3vw 30vh 3vw;
+    position: fixed;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    transition: background-color .4s;
+}
+
+.album_info_active{
+    background-color: rgb(0, 0, 0);
+}
+
+.album_image{
+    width: 20vh;
+    height: 20vh;
+    border-radius: 100%;
+    margin-bottom: 5vh;
+}
+
+.album_name{
+    font-size: 3vh;
+    color: #007599;
+    font-weight: 700;
+    margin-bottom: 1vh;
+}
+
+.album_author{
+    font-size: 2.5vh;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.album_desc{
+    font-size: 2vh;
+    font-weight: 600;
+}
+
+.play_album{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 100%;
+    background-color: #3c8103;
+    background-image: url("../imgs/play.png");
+    background-size: 1.5vh;
+    background-position: 2vh center;
+    background-repeat: no-repeat;
+}
+
+.play_album:hover{
+    background-color: #306c01;
+}
+
+.album_controls{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.album_controls_button{
+    background-color: #009099;
+    padding: 1vh 3vh;
+    border-radius: 3vh;
+}
+
+.album_controls_button:hover{
+    filter: brightness(90%);
+}
+
+.remove_album{
+    background-color: #6c011a;
+}
+
+.upload_song{
+    background-color: #306c01;
+}
+
+.add_song_placeholder{
+    background-color: #00000070;
+    font-size: 2vh;
+    font-weight: 700;
+    padding: 2vh 5vh;
+    text-align: center;
+    border-radius: 10vh;
+    cursor: pointer;
+}
+
+.add_song_placeholder:hover{
+    background-color: #000000DD;
+}
+
+.album_songs{
+    width: 74vw;
+    height: 100vh;
+    position: absolute;
+    overflow: scroll;
+    margin-left: 26vw;
+    margin-top: -1vh;
+    background-color: #00000090;
+}
+
+@keyframes hide_new_song_info {
+    from {transform: translateX(0vw);}
+    to {transform: translateX(-100vw);}
+}
+
+@keyframes show_new_song_info {
+    from {
+        transform: translateX(-100vw);
+    }
+    to {
+        transform: translateX(0vw);
+    }
+
 }
 
 @keyframes show_play_info {

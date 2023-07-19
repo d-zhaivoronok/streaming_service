@@ -29,9 +29,9 @@ class Song(models.Model):
     lyrics = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     source = models.FileField(upload_to='audio/', null=True, blank=True)
-    album = models.ForeignKey('Album', on_delete=models.SET_NULL, blank=True, null=True)
+    album = models.ForeignKey('Album', on_delete=models.CASCADE, blank=True, null=True)
     views_counter = models.PositiveIntegerField(default=0)
-    genres = models.ManyToManyField('Genre')
+    genres = models.ForeignKey('Genre', on_delete=models.CASCADE, blank=True, null=True)
     time_of_posting = models.DateTimeField(auto_now_add=True)
     # Add more fields as needed
 
@@ -46,7 +46,9 @@ class Genre(models.Model):
         return self.name
 class Album(models.Model):
     # Fields for the Album model
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     image = models.ImageField(upload_to='album_images/')
+    description = models.CharField(max_length=1000, null=True, blank=True)
     user_or_band = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     time_of_posting = models.DateTimeField(auto_now_add=True)

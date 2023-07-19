@@ -28,14 +28,14 @@ def home(request):
 
     if request.user.is_authenticated:
         user = request.user
-        recently_listened_songs = SongListening.objects.all().filter(user=request.user).order_by("-listened_at")[:12]
+        recently_listened_songs = SongListening.objects.all().filter(user=request.user).order_by("-listened_at")
         context['recently_listened_songs_count'] = recently_listened_songs.count()
         context['recently_listened_songs'] = recently_listened_songs[:5]
 
         recently_listened_songs_genres_count = {}
 
         for song in recently_listened_songs:
-            genre_name = song.song.genres.values()[0]['name']
+            genre_name = song.song.genres
             recently_listened_songs_genres_count[genre_name] = recently_listened_songs_genres_count.get(genre_name,
                                                                                                         0) + 1
 
@@ -47,6 +47,8 @@ def home(request):
             recommended_songs.extend(random_songs)
 
         random.shuffle(recommended_songs)
+
+        print(recommended_songs[:12])
 
         context['recommendation'] = recommended_songs[:12]
 
@@ -73,7 +75,7 @@ def listen(request, song_id):
         recently_listened_songs_genres_count = {}
 
         for song in recently_listened_songs:
-            genre_name = song.song.genres.values()[0]['name']
+            genre_name = song.song.genres
             recently_listened_songs_genres_count[genre_name] = recently_listened_songs_genres_count.get(genre_name,
                                                                                                         0) + 1
 
@@ -93,17 +95,29 @@ def listen(request, song_id):
 
 @login_required(login_url='login')
 def library(request):
+    context = {}
     if request.method == 'POST':
-        form = CreatePlaylist(request.POST)
-        if form.is_valid():
-            playlist = form.save(commit=False)
-            playlist.user_or_band = request.user
-            playlist.save()
-            return redirect('library')
+        if 'create_playlist' in request.POST:
+            form = CreatePlaylist(request.POST)
+            if form.is_valid():
+                playlist = form.save(commit=False)
+                playlist.user_or_band = request.user
+                playlist.save()
+                return redirect('library')
+        elif 'create_album' in request.POST:
+            form = CreateAlbum(request.POST, request.FILES)
+            if form.is_valid():
+                album = form.save(commit=False)
+                album.user_or_band = request.user
+                album.save()
+                return redirect('library')
+
     else:
         form = CreatePlaylist()
+        context['playlist_form'] = form
+        form = CreateAlbum()
+        context['album_form'] = form
 
-    context = {'form': form}
     library = Playlist.objects.all().filter(user_or_band=request.user)
     if request.user.participiant.user_type == 'band':
         albums = Album.objects.all().filter(user_or_band=request.user)
@@ -122,11 +136,40 @@ def library_filters(request, filter):
 
     return render(request, "bootisfi/library.html", context=context)
 
+def playlist(request, album_id):
+    context = {}
+    genres = Genre.objects.all()
+    album = Album.objects.get(id=album_id)
+    songs = Song.objects.all().filter(album__id=album_id)
+    context['songs'] = songs
+    context ['album'] = album
+    context['genres'] = genres
+    if request.method == 'POST':
+        form = NewSong(request.POST, request.FILES)
+        if form.is_valid():
+            song = form.save(commit=False)
+            song.author = request.user
+            song.album = album
+            song.save()
+            return redirect('album', album_id)
+    else:
+        form = NewSong()
+        context['form'] = form
+
+
+    return render(request, "bootisfi/playlist.html", context=context)
+
+def playlistRemove(request, album_id):
+
+    album = Album.objects.get(id=album_id)
+    if request.user == album.user_or_band:
+        album.delete()
+    return redirect('library')
+
 @login_required(login_url='login')
 def profile(request):
     if request.method == 'POST':
         form = ChangeUserForm(request.POST, request.FILES, instance=request.user.participiant)
-        print(form)
         if form.is_valid():
             user = form.save(commit=False)
             user.user = request.user

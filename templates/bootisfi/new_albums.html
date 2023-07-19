@@ -6,11 +6,11 @@
             <h1 class="text_header">Нові альбоми</h1>
             <div class="recomended_music">
                 {% for album in new_albums %}
-                <div class="recomended_song">
+                <a href="{% url 'album' album.id %}" class="recomended_song">
                     <img src="{{ album.image.url }}" alt="" class="recomended_song_preview">
                     <h2 class="song_title">{{ album.name }}</h2>
                     <h3 class="song_artist">{{ album.user_or_band.participiant.name }}</h3>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </div>
